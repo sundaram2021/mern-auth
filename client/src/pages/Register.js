@@ -38,6 +38,7 @@ export default function Register() {
       },
     });
     if (res.ok) {
+      alert("user is registered successfully");
       navigate("/login") ;
     }
   };
