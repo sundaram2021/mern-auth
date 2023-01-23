@@ -13,13 +13,25 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const form = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+
+    const res = await fetch("http://localhost:8000/api/login", {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        'Content-Type': "application/json"
+      }
+    })
+
+    if(res.ok){
+      console.log('user id logged');
+    }
   };
 
   return (
