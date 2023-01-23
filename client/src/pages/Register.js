@@ -10,14 +10,10 @@ import Container from "@mui/material/Container";
 import { CssBaseline } from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 
-// const initialForm = ({
-//   firstName: "",
-//   lastName: "",
-//   email: "",
-//   password: ""
-// });
 
 export default function Register() {
+  // const [checkForm, setCheckForm] = React.useState(true);
+
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,6 +25,11 @@ export default function Register() {
       firstName: data.get("firstName"),
     };
 
+    // if (form.email, form.firstName, form.lastName, form.password === ""){
+    //   setCheckForm(false);
+    //   return;
+    // }
+
     const res = await fetch("http://localhost:8000/api/register", {
       method: "POST",
       body: JSON.stringify(form),
@@ -37,10 +38,9 @@ export default function Register() {
       },
     });
     if (res.ok) {
-      // navigate("/login");
+      navigate("/login") ;
     }
   };
-
 
   return (
     <Container component="main" maxWidth="xs">
