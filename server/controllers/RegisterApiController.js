@@ -2,7 +2,7 @@ import RegisteredUser from "../models/RegisterSchema.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 
-export const register = async (req, res) => {
+export const register = async(req, res) => {
   const { firstName, lastName, email, password } = req.body;
   if (!email || !firstName || !lastName || !password) {
     return res.status(204).json("invalid input");
@@ -13,13 +13,15 @@ export const register = async (req, res) => {
     return res.status(406).json("User already registered");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10); // 10 -> saltrounds
+  const saltRounds = 10;
+  const salt = await bcrypt.genSalt(saltRounds);
+  const hashedPassword = await bcrypt.hash(password, salt); // 10 -> saltrounds
 
   const user = new RegisteredUser({ firstName, lastName, email, password: hashedPassword });
 
   await user.save();
 
-  res.status(201).json({ message: "user is registered" });
+  return res.status(201).json({ message: "user is registered" });
 };
 
 export const login = async (req, res) => {
@@ -40,12 +42,13 @@ export const login = async (req, res) => {
   if(!match){
     res.status(401).json({ message: "Password doesn't matched" })
     return
-  }else {
-    const token = jwt.sign({user}, "secret")
-    return res.json({user: token})
   }
 
-  console.log(user);
+  const payload = {
+    email: user.email,
+    id: user._id
+  }
 
-  res.json({ message: "User is logged in" });
+  const token = jwt.sign(payload, process.env.JWT_SECRET) ;
+  return res.json({ message: "Successfully logged in", token, user })
 };
