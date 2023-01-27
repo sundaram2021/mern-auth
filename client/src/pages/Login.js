@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{  } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -36,6 +36,7 @@ export default function SignIn() {
 
     if(res.ok){
       Cookies.set("token", token)
+      localStorage.setItem("token", JSON.stringify(token));
       alert('user is logged in');
       navigate("/")
     }
