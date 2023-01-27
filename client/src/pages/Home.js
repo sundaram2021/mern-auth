@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import React, { useEffect } from "react";
 
 function Home() {
   // const [User, setUser] = useState();
@@ -7,14 +6,13 @@ function Home() {
 
   async function fetchToken() {
     try {
-      const token = Cookies.get("token");
-      // console.log(token);
-      const res = await fetch("http://localhost:8000/api/login", {
-        method: "POST",
+      const token = localStorage.getItem("token");
+      console.log(token);
+      const res = await fetch("http://localhost:8000", {
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
+          "Accept": "application/json",
+          'x-access-token': localStorage.getItem('token'),
         },
       });
 
@@ -26,8 +24,8 @@ function Home() {
       const contentType = res.headers.get("Content-Type");
       if (contentType && contentType.indexOf("application/json") !== -1) {
         console.log("Server is sending a JSON response");
-        const { user } = await res.json();
-        console.log("User data => " + user);
+        const {email}  = await res.json();
+        console.log("User data => " + email);
       } else {
         console.log("Server is not sending a JSON response");
       }
