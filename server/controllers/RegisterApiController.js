@@ -1,3 +1,5 @@
+import * as dotenv from "dotenv";
+dotenv.config();
 import RegisteredUser from "../models/RegisterSchema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -50,8 +52,10 @@ export const login = async (req, res) => {
     const payload = {
       email: user.email,
       id: user._id,
+      firstName: user.firstName
     };
-    console.log("user...");
+    // console.log("user...");
+    console.log(payload);
     const token = jwt.sign(payload, process.env.JWT_SECRET);
     // console.log(window.location.href);
     return res
