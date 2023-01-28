@@ -36,7 +36,7 @@ export default function SignIn() {
 
     if(res.ok){
       Cookies.set("token", token)
-      localStorage.setItem("token", JSON.stringify(token));
+      localStorage.setItem('token', JSON.stringify(token));
       alert('user is logged in');
       navigate("/")
     }
