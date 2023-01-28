@@ -52,15 +52,21 @@ export const login = async (req, res) => {
     const payload = {
       email: user.email,
       id: user._id,
-      firstName: user.firstName
+      firstName: user.firstName,
     };
     // console.log("user...");
     console.log(payload);
     const token = jwt.sign(payload, process.env.JWT_SECRET);
     // console.log(window.location.href);
-    return res
-      .status(201)
-      .json({ message: "Successfully logged in", token, user });
+    // console.log(token);
+    let options = {
+      path: "/",
+      sameSite: true,
+      maxAge: 1000 * 60 * 60 * 24, // would expire after 24 hours
+      httpOnly: true, // The cookie only accessible by the web server
+    };
+
+    return res.json({message: "login success", token})
   } catch (err) {
     return res.status(408).json({ message: "server error" });
   }
