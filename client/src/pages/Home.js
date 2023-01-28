@@ -1,34 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function Home() {
-  // const [User, setUser] = useState();
+  const [email, setEmail] = useState();
   // const [protect, setProtect] = useState(false);
 
   async function fetchToken() {
     try {
-      const token = localStorage.getItem("token");
+      const token = JSON.parse(localStorage.getItem('token'))
       console.log(token);
       const res = await fetch("http://localhost:8000", {
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
-          'x-access-token': localStorage.getItem('token'),
+          Accept: "application/json",
+          "x-access-token": token,
+
         },
       });
 
-      // if (token) {
-      //   setProtect(true);
-      // }
-      // console.log("res => "+res);
-
-      const contentType = res.headers.get("Content-Type");
-      if (contentType && contentType.indexOf("application/json") !== -1) {
-        console.log("Server is sending a JSON response");
-        const {email}  = await res.json();
-        console.log("User data => " + email);
-      } else {
-        console.log("Server is not sending a JSON response");
+      if(res.ok){
+        const {email} = await res.json()
+        // const email = user.email;
+        console.log(email);
+        setEmail(email)
       }
+
     } catch (err) {
       console.error(err);
     }
@@ -36,9 +31,10 @@ function Home() {
 
   useEffect(() => {
     fetchToken();
-  });
+    console.log('jkjkj');
+  }, []);
 
-  return <h1 style={{ textAlign: "center" }}>Hello</h1>;
+  return <h1 style={{ textAlign: "center" }}>Hello { email }</h1>;
 }
 
 export default Home;
