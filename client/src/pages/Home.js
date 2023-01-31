@@ -5,11 +5,23 @@ function Home() {
   const [email, setEmail] = useState();
   const [protection, setProtection] = useState(false);
   const navigate = useNavigate();
+  
+  const token = JSON.parse(localStorage.getItem("token"));
+  console.log(token);
+  
+  window.addEventListener("storage", function (event) {
+    if (event.key === "token" && !event.newValue) {
+      window.location.replace("/login");
+    }
+  });
+
+  if (!token) {
+    window.location.replace("/login");
+  }
 
   async function fetchToken() {
     try {
-      const token = JSON.parse(localStorage.getItem("token"));
-      console.log(token);
+      
       const res = await fetch("http://localhost:8000", {
         headers: {
           "Content-Type": "application/json",
