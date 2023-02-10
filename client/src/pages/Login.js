@@ -9,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom'
-import Cookies from 'js-cookie';
 
 
 const theme = createTheme();
@@ -35,7 +34,6 @@ export default function SignIn() {
     const { token } = await res.json();
 
     if(res.ok){
-      Cookies.set("token", token)
       localStorage.setItem('token', JSON.stringify(token));
       alert('user is logged in');
       navigate("/")
